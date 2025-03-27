@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4203a9, #90bafc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #fff;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: #fff;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1em;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Attendance Calculator</h1>
+        <div class="input-group">
+            <label>Total Working Days</label>
+            <input type="number" id="totalDays" placeholder="Enter total days">
+        </div>
+        <div class="input-group">
+            <label>Current Attendance %</label>
+            <input type="number" id="currentAttendance" placeholder="Enter current percentage">
+        </div>
+        <button onclick="calculateDays()">Calculate</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateDays() {
+            const totalDays = parseInt(document.getElementById('totalDays').value);
+            const currentAttendance = parseFloat(document.getElementById('currentAttendance').value);
+            const resultDiv = document.getElementById('result');
+
+            if (!totalDays || !currentAttendance || currentAttendance < 0 || currentAttendance > 100) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = 'Please enter valid values!';
+                return;
+            }
+
+            let currentDaysAttended = Math.round((currentAttendance * totalDays) / 100);
+            let daysNeeded = 0;
+            let currentPercentage = currentAttendance;
+
+            while (currentPercentage < 75 && currentDaysAttended < totalDays) {
+                // Each day not attended: -2%
+                // Each day attended: +1%
+                // Net gain per attended day: 3% (1% gain + 2% not lost)
+                
+                currentDaysAttended++;
+                daysNeeded++;
+                currentPercentage = (currentDaysAttended / totalDays) * 100;
+            }
+
+            resultDiv.style.display = 'block';
+            if (currentPercentage >= 75) {
+                resultDiv.innerHTML = `You need to attend <strong>${daysNeeded}</strong> more days to reach ${currentPercentage.toFixed(1)}% attendance!`;
+            } else {
+                resultDiv.innerHTML = 'Impossible to reach 75% with remaining days!';
+            }
+        }
+    </script>
+</body>
+</html>

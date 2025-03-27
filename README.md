@@ -1,4 +1,7 @@
-![image](https://github.com/user-attachments/assets/d9dd6452-551d-4204-9145-1f312a8e1cd0)# Attendance Calculator
+![image](https://github.com/user-attachments/assets/d9dd6452-551d-4204-9145-1f312a8e1cd0)
+
+
+# Attendance Calculator
 
 A vibrant and stunning web-based calculator to help students determine how many days they need to attend college to maintain a 75% attendance rate, considering daily attendance dynamics.
 
